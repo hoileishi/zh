@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дзен-библиотека иероглифов - HoileiCards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #1A1714;
+            --bg-panel: rgba(32, 28, 25, 0.6);
+            --bg-panel-hover: rgba(45, 40, 35, 0.75);
+            --bg-panel-solid: #25201C;
+            --border-glass: rgba(245, 240, 230, 0.08);
+            --border-glass-hover: rgba(245, 240, 230, 0.12);
+            --border-active: rgba(212, 168, 83, 0.3);
+            --text-primary: #F5F0E6;
+            --text-secondary: #C8BCAC;
+            --text-muted: #8E8275;
+            --amber: #D4A853;
+            --sage: #8DA98D;
+            --terracotta: #A67265;
+            --amber-soft: rgba(212, 168, 83, 0.15);
+            --sage-soft: rgba(141, 169, 141, 0.15);
+            --terracotta-soft: rgba(166, 114, 101, 0.15);
+            --radius-sm: 16px;
+            --radius-md: 24px;
+            --radius-lg: 32px;
+            --shadow-soft: 0 12px 40px rgba(0,0,0,0.45);
+            --shadow-glow: 0 0 30px rgba(212, 168, 83, 0.08);
+            --font-han: 'Noto Serif SC', 'Songti SC', serif;
+            --font-body: 'Noto Sans', system-ui, sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            background: radial-gradient(ellipse 80% 60% at 20% 40%, rgba(212,168,83,0.04) 0%, transparent 60%),
+                        radial-gradient(ellipse 60% 80% at 80% 60%, rgba(141,169,141,0.03) 0%, transparent 60%);
+            animation: breathe 35s ease-in-out infinite alternate;
+        }
+        body::after {
+            background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(166,114,101,0.025) 0%, transparent 70%);
+            animation: breathe2 45s ease-in-out infinite alternate;
+        }
+        @keyframes breathe {
+            0% { opacity: 0.6; transform: scale(1) translate(0,0); }
+            100% { opacity: 1; transform: scale(1.1) translate(-2%,-1%); }
+        }
+        @keyframes breathe2 {
+            0% { opacity: 0.4; transform: scale(1) translate(0,0); }
+            100% { opacity: 0.9; transform: scale(1.15) translate(1%,2%); }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-header {
+            text-align: center;
+            padding: 32px 0 40px;
+            position: relative;
+        }
+        .app-header h1 {
+            font-family: var(--font-han);
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+        .app-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        .header-decoration {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--amber), transparent);
+            margin: 16px auto 0;
+            opacity: 0.4;
+            border-radius: 2px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .nav-tab {
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        .nav-tab:hover {
+            background: var(--bg-panel-hover);
+            border-color: var(--border-glass-hover);
+            color: var(--text-primary);
+        }
+        .nav-tab.active {
+            background: var(--amber-soft);
+            border-color: var(--border-active);
+            color: var(--amber);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .glass {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            backdrop-filter: blur(20px) saturate(1.1);
+            -webkit-backdrop-filter: blur(20px) saturate(1.1);
+            transition: var(--transition);
+        }
+        .glass:hover { border-color: var(--border-glass-hover); }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        .view.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Groups Grid */
+        .groups-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .group-card {
+            padding: 24px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .group-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--amber);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .group-card:hover::before { opacity: 0.6; }
+        .group-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+            background: var(--bg-panel-hover);
+        }
+        .group-card.selected {
+            border-color: var(--border-active);
+            background: var(--amber-soft);
+            box-shadow: var(--shadow-glow);
+        }
+        .group-card.selected::before { opacity: 1; }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+        .group-title {
+            font-family: var(--font-han);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .group-count {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .group-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        .group-preview {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .preview-char {
+            width: 36px; height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            font-family: var(--font-han);
+            font-size: 18px;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-glass);
+        }
+        .group-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 28px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+        .btn:hover {
+            background: var(--bg-panel-hover);
+            border-color: var(--border-glass-hover);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+        .btn-primary {
+            background: var(--amber-soft);
+            border-color: var(--border-active);
+            color: var(--amber);
+        }
+        .btn-primary:hover {
+            background: rgba(212,168,83,0.25);
+            box-shadow: var(--shadow-glow);
+        }
+        .btn-success {
+            background: var(--sage-soft);
+            border-color: rgba(141,169,141,0.3);
+            color: var(--sage);
+        }
+        .btn-success:hover {
+            background: rgba(141,169,141,0.25);
+            box-shadow: 0 0 30px rgba(141,169,141,0.08);
+        }
+        .btn-danger {
+            background: var(--terracotta-soft);
+            border-color: rgba(166,114,101,0.3);
+            color: var(--terracotta);
+        }
+        .btn-sm { padding: 8px 16px; font-size: 13px; }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Training */
+        .training-container { max-width: 520px; margin: 0 auto; }
+        .training-info {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .training-info .selected-groups { color: var(--amber); font-weight: 500; }
+
+        .flashcard-wrapper {
+            perspective: 1200px;
+            margin-bottom: 32px;
+        }
+        .flashcard {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            backdrop-filter: blur(20px) saturate(1.1);
+            box-shadow: var(--shadow-soft);
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: var(--bg-panel-hover);
+        }
+        .card-hanzi {
+            font-family: var(--font-han);
+            font-size: 96px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .card-pinyin {
+            font-size: 24px;
+            color: var(--amber);
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .card-meaning {
+            font-size: 20px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .card-example {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
+            text-align: center;
+            width: 100%;
+        }
+        .card-example-hanzi {
+            font-family: var(--font-han);
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .card-example-pinyin {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .card-example-trans {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .card-hint {
+            position: absolute;
+            bottom: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .progress-container { margin-bottom: 24px; }
+        .progress-bar {
+            height: 4px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber), var(--terracotta));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-btn {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .control-btn:hover {
+            background: var(--bg-panel-hover);
+            color: var(--text-primary);
+            transform: scale(1.1);
+            border-color: var(--border-glass-hover);
+        }
+        .control-btn.flip-btn {
+            width: auto;
+            padding: 0 32px;
+            border-radius: 26px;
+            font-size: 14px;
+            font-family: var(--font-body);
+            gap: 8px;
+        }
+
+        /* Editor */
+        .editor-section { margin-bottom: 24px; }
+        .section-title {
+            font-family: var(--font-han);
+            font-size: 20px;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-glass);
+            margin-left: 8px;
+        }
+        .word-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .word-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--border-glass);
+            transition: var(--transition);
+        }
+        .word-item:hover {
+            background: rgba(0,0,0,0.25);
+            border-color: var(--border-glass-hover);
+        }
+        .word-hanzi {
+            font-family: var(--font-han);
+            font-size: 32px;
+            width: 60px;
+            text-align: center;
+            color: var(--text-primary);
+        }
+        .word-info { flex: 1; }
+        .word-pinyin {
+            color: var(--amber);
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        .word-meaning {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .word-group-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glass);
+            color: var(--text-muted);
+        }
+        .word-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .icon-btn {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border-glass);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        .icon-btn:hover {
+            background: var(--bg-panel-hover);
+            color: var(--text-primary);
+            border-color: var(--border-glass-hover);
+        }
+        .icon-btn.danger:hover {
+            background: var(--terracotta-soft);
+            color: var(--terracotta);
+            border-color: rgba(166,114,101,0.3);
+        }
+
+        .form-group { margin-bottom: 16px; }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: rgba(0,0,0,0.2);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--border-active);
+            box-shadow: 0 0 0 3px var(--amber-soft);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 24px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--bg-panel-solid);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-soft);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-header {
+            font-family: var(--font-han);
+            font-size: 22px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            font-family: var(--font-han);
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .group-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+        .group-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .group-chip:hover {
+            background: var(--bg-panel-hover);
+            border-color: var(--border-glass-hover);
+        }
+        .group-chip.active {
+            background: var(--amber-soft);
+            border-color: var(--border-active);
+            color: var(--amber);
+        }
+        .group-chip .chip-count {
+            font-size: 11px;
+            opacity: 0.7;
+            background: rgba(0,0,0,0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--border-glass);
+            min-width: 100px;
+        }
+        .stat-value {
+            font-family: var(--font-han);
+            font-size: 24px;
+            color: var(--amber);
+            font-weight: 600;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ========== GAMES ========== */
+        .games-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .game-card {
+            padding: 28px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: var(--sage);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .game-card:hover::before { opacity: 0.8; }
+        .game-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-soft);
+            background: var(--bg-panel-hover);
+        }
+        .game-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        .game-title {
+            font-family: var(--font-han);
+            font-size: 18px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .game-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .game-screen {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .game-screen.active { display: block; }
+
+        /* Quiz Game */
+        .quiz-container {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .quiz-question {
+            text-align: center;
+            padding: 40px;
+            margin-bottom: 24px;
+        }
+        .quiz-hanzi {
+            font-family: var(--font-han);
+            font-size: 80px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .quiz-hint {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .quiz-option {
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: rgba(0,0,0,0.15);
+            color: var(--text-secondary);
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        .quiz-option:hover {
+            background: var(--bg-panel-hover);
+            border-color: var(--border-glass-hover);
+            color: var(--text-primary);
+        }
+        .quiz-option.correct {
+            background: var(--sage-soft);
+            border-color: rgba(141,169,141,0.5);
+            color: var(--sage);
+        }
+        .quiz-option.wrong {
+            background: var(--terracotta-soft);
+            border-color: rgba(166,114,101,0.5);
+            color: var(--terracotta);
+        }
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .quiz-feedback {
+            text-align: center;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 20px;
+            font-size: 15px;
+            display: none;
+        }
+        .quiz-feedback.show { display: block; }
+        .quiz-feedback.correct {
+            background: var(--sage-soft);
+            color: var(--sage);
+            border: 1px solid rgba(141,169,141,0.3);
+        }
+        .quiz-feedback.wrong {
+            background: var(--terracotta-soft);
+            color: var(--terracotta);
+            border: 1px solid rgba(166,114,101,0.3);
+        }
+        .quiz-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .quiz-stats span { color: var(--amber); font-weight: 600; }
+
+        /* Memory Game */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 480px;
+            margin: 0 auto 24px;
+        }
+        .memory-card {
+            aspect-ratio: 1;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-glass);
+            background: var(--bg-panel);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        .memory-card:hover {
+            border-color: var(--border-glass-hover);
+            transform: scale(1.05);
+        }
+        .memory-card.flipped {
+            background: var(--bg-panel-hover);
+            border-color: var(--border-active);
+        }
+        .memory-card.matched {
+            background: var(--sage-soft);
+            border-color: rgba(141,169,141,0.4);
+            color: var(--sage);
+            cursor: default;
+            animation: matchPulse 0.5s ease;
+        }
+        @keyframes matchPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .memory-card-content {
+            font-family: var(--font-han);
+            text-align: center;
+            padding: 8px;
+            font-size: 22px;
+        }
+        .memory-card.small-text .memory-card-content {
+            font-size: 14px;
+            font-family: var(--font-body);
+        }
+        .memory-overlay {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-panel-solid);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            backface-visibility: hidden;
+        }
+        .memory-card.flipped .memory-overlay,
+        .memory-card.matched .memory-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Sprint Game */
+        .sprint-container {
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .sprint-timer {
+            font-family: var(--font-han);
+            font-size: 48px;
+            color: var(--amber);
+            margin-bottom: 8px;
+        }
+        .sprint-score {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        .sprint-score span { color: var(--amber); font-weight: 600; }
+        .sprint-card {
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+        .sprint-hanzi {
+            font-family: var(--font-han);
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+        .sprint-translation {
+            font-size: 22px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .sprint-question {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        .sprint-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        .sprint-btn {
+            padding: 16px 40px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-glass);
+            background: var(--bg-panel);
+            font-size: 28px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 120px;
+        }
+        .sprint-btn:hover { transform: scale(1.05); }
+        .sprint-btn.correct-btn:hover {
+            border-color: var(--sage);
+            background: var(--sage-soft);
+        }
+        .sprint-btn.wrong-btn:hover {
+            border-color: var(--terracotta);
+            background: var(--terracotta-soft);
+        }
+        .sprint-result {
+            padding: 40px;
+            text-align: center;
+        }
+        .sprint-result h2 {
+            font-family: var(--font-han);
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: var(--amber);
+        }
+        .sprint-result p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        /* Game over / result shared */
+        .game-result {
+            text-align: center;
+            padding: 48px 24px;
+        }
+        .game-result h2 {
+            font-family: var(--font-han);
+            font-size: 36px;
+            color: var(--amber);
+            margin-bottom: 16px;
+        }
+        .game-result p {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .game-result .result-stat {
+            font-size: 48px;
+            font-family: var(--font-han);
+            color: var(--text-primary);
+            margin: 16px 0;
+        }
+
+        @media (max-width: 600px) {
+            .app-header h1 { font-size: 22px; }
+            .card-hanzi { font-size: 64px; }
+            .groups-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .flashcard-face { padding: 24px; }
+            .quiz-options { grid-template-columns: 1fr; }
+            .memory-grid { grid-template-columns: repeat(3, 1fr); }
+            .quiz-hanzi { font-size: 56px; }
+            .sprint-hanzi { font-size: 48px; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-glass-hover); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+			<div class="brand">HoileiCards</div>
+            <h1>汉字图书馆</h1>
+            <p>Дзен-библиотека иероглифов</p>
+            <div class="header-decoration"></div>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showView('library')">📚 Библиотека</button>
+            <button class="nav-tab" onclick="showView('training')">🎯 Тренировка</button>
+            <button class="nav-tab" onclick="showView('games')">🎮 Игры</button>
+            <button class="nav-tab" onclick="showView('editor')">✏️ Редактор</button>
+        </nav>
+
+        <!-- LIBRARY VIEW -->
+        <div id="library-view" class="view active">
+            <div class="stats-bar">
+                <div class="stat-item"><div class="stat-value" id="total-groups">0</div><div class="stat-label">групп</div></div>
+                <div class="stat-item"><div class="stat-value" id="total-words">0</div><div class="stat-label">иероглифов</div></div>
+                <div class="stat-item"><div class="stat-value" id="selected-count">0</div><div class="stat-label">выбрано</div></div>
+            </div>
+            <div class="action-bar glass">
+                <button class="btn btn-primary" onclick="openModal('group-modal')"><span>+</span> Новая группа</button>
+                <button class="btn btn-success" onclick="selectAllGroups()" id="select-all-btn">Выбрать все</button>
+                <button class="btn" onclick="clearSelection()" id="clear-btn" style="display:none;">Сбросить</button>
+            </div>
+            <div class="groups-grid" id="groups-grid"></div>
+        </div>
+
+        <!-- TRAINING VIEW -->
+        <div id="training-view" class="view">
+            <div class="training-container">
+                <div class="group-selector" id="training-group-selector"></div>
+                <div class="training-info" id="training-info">Выберите хотя бы одну группу для начала тренировки</div>
+                <div class="progress-container" id="progress-container" style="display:none;">
+                    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+                    <div class="progress-text"><span id="progress-current">1</span><span id="progress-total">10</span></div>
+                </div>
+                <div class="flashcard-wrapper" id="flashcard-wrapper" style="display:none;">
+                    <div class="flashcard" id="flashcard" onclick="flipCard()">
+                        <div class="flashcard-face flashcard-front">
+                            <div class="card-hanzi" id="card-hanzi">汉</div>
+                            <div class="card-hint">Нажмите, чтобы перевернуть</div>
+                        </div>
+                        <div class="flashcard-face flashcard-back">
+                            <div class="card-pinyin" id="card-pinyin">hàn</div>
+                            <div class="card-meaning" id="card-meaning">китайский</div>
+                            <div class="card-example" id="card-example">
+                                <div class="card-example-hanzi" id="example-hanzi">中国人</div>
+                                <div class="card-example-pinyin" id="example-pinyin">Zhōngguó rén</div>
+                                <div class="card-example-trans" id="example-trans">китаец</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls" id="training-controls" style="display:none;">
+                    <button class="control-btn" onclick="prevCard()">←</button>
+                    <button class="control-btn flip-btn" onclick="flipCard()"><span>↻</span> Перевернуть</button>
+                    <button class="control-btn" onclick="nextCard()">→</button>
+                </div>
+                <div class="controls" style="margin-top:16px; display:none;" id="shuffle-controls">
+                    <button class="btn btn-sm" onclick="shuffleCards()">🔀 Перемешать</button>
+                    <button class="btn btn-sm" onclick="resetTraining()">↺ Начать сначала</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GAMES VIEW -->
+        <div id="games-view" class="view">
+            <div id="games-menu">
+                <div class="group-selector" id="games-group-selector"></div>
+                <div class="games-menu">
+                    <div class="game-card glass" onclick="startGame('quiz')">
+                        <div class="game-icon">🧩</div>
+                        <div class="game-title">Викторина</div>
+                        <div class="game-desc">Угадай перевод иероглифа из 4 вариантов. Идеально для начального запоминания значений.</div>
+                    </div>
+                    <div class="game-card glass" onclick="startGame('memory')">
+                        <div class="game-icon">🧠</div>
+                        <div class="game-title">Память</div>
+                        <div class="game-desc">Найди пары «иероглиф — перевод». Тренирует визуальную ассоциацию и концентрацию.</div>
+                    </div>
+                    <div class="game-card glass" onclick="startGame('sprint')">
+                        <div class="game-icon">⚡</div>
+                        <div class="game-title">Спринт</div>
+                        <div class="game-desc">60 секунд на максимум правильных ответов. Проверь скорость распознавания на лету.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Game Screen -->
+            <div id="quiz-game" class="game-screen">
+                <div class="quiz-container">
+                    <div class="quiz-stats">
+                        <div>Вопрос: <span id="quiz-current">1</span>/<span id="quiz-total">10</span></div>
+                        <div>Правильно: <span id="quiz-score">0</span></div>
+                    </div>
+                    <div class="quiz-question glass">
+                        <div class="quiz-hanzi" id="quiz-hanzi">汉</div>
+                        <div class="quiz-hint">Выберите правильный перевод</div>
+                    </div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                    <div class="quiz-options" id="quiz-options"></div>
+                    <div class="controls">
+                        <button class="btn" onclick="nextQuizQuestion()" id="quiz-next-btn" style="display:none;">Далее →</button>
+                        <button class="btn" onclick="exitGame()">Выйти в меню</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Game Screen -->
+            <div id="memory-game" class="game-screen">
+                <div style="text-align:center; margin-bottom:20px;">
+                    <div style="font-size:14px; color:var(--text-muted); margin-bottom:8px;">
+                        Ходов: <span id="memory-moves" style="color:var(--amber); font-weight:600;">0</span> | 
+                        Найдено: <span id="memory-matches" style="color:var(--sage); font-weight:600;">0</span>/<span id="memory-pairs">0</span>
+                    </div>
+                    <div style="font-size:13px; color:var(--text-muted);">Найдите пары иероглифов и их переводов</div>
+                </div>
+                <div class="memory-grid" id="memory-grid"></div>
+                <div class="controls" style="margin-top:24px;">
+                    <button class="btn btn-sm" onclick="initMemoryGame()">↺ Заново</button>
+                    <button class="btn btn-sm" onclick="exitGame()">Выйти в меню</button>
+                </div>
+            </div>
+
+            <!-- Sprint Game Screen -->
+            <div id="sprint-game" class="game-screen">
+                <div class="sprint-container">
+                    <div class="sprint-timer" id="sprint-timer">60</div>
+                    <div class="sprint-score">Очки: <span id="sprint-score">0</span></div>
+                    <div class="sprint-card glass">
+                        <div class="sprint-hanzi" id="sprint-hanzi">汉</div>
+                        <div class="sprint-translation" id="sprint-translation">китайский</div>
+                        <div class="sprint-question">Это правильный перевод?</div>
+                    </div>
+                    <div class="sprint-buttons">
+                        <button class="sprint-btn wrong-btn" onclick="answerSprint(false)">✗ Нет</button>
+                        <button class="sprint-btn correct-btn" onclick="answerSprint(true)">✓ Да</button>
+                    </div>
+                    <div class="controls" style="margin-top:24px;">
+                        <button class="btn btn-sm" onclick="exitGame()">Сдаться</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Result Screen -->
+            <div id="game-result" class="game-screen">
+                <div class="game-result">
+                    <h2 id="result-title">Отлично!</h2>
+                    <div class="result-stat" id="result-stat">8/10</div>
+                    <p id="result-desc">Вы хорошо знаете эти иероглифы</p>
+                    <div class="controls" style="margin-top:32px;">
+                        <button class="btn btn-primary" onclick="restartCurrentGame()">↺ Играть ещё</button>
+                        <button class="btn" onclick="exitGame()">В меню игр</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EDITOR VIEW -->
+        <div id="editor-view" class="view">
+            <div class="editor-section">
+                <div class="section-title">Импорт и экспорт</div>
+                <div class="action-bar glass" style="justify-content:flex-start;">
+                    <button class="btn btn-success" onclick="exportJSON()">📤 Экспорт JSON</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">📥 Импорт JSON</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importJSON(this)">
+                    <button class="btn btn-danger btn-sm" onclick="resetData()">♻️ Сбросить всё</button>
+                </div>
+                <p style="font-size:13px; color:var(--text-muted); margin-bottom:24px; padding:0 8px;">
+                    Экспортируйте свою коллекцию в JSON-файл для резервного копирования или переноса на другое устройство. 
+                    Импорт добавит новые группы и слова к существующим (дубликаты по иероглифам пропускаются).
+                </p>
+            </div>
+            <div class="editor-section">
+                <div class="section-title">Управление словами</div>
+                <div class="action-bar glass" style="justify-content:flex-start;">
+                    <button class="btn btn-primary" onclick="openModal('word-modal')"><span>+</span> Добавить слово</button>
+                </div>
+                <div class="word-list" id="word-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" id="group-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">Новая группа</div>
+            <div class="form-group">
+                <label class="form-label">Название группы</label>
+                <input type="text" class="form-input" id="group-name" placeholder="Например: HSK 1">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Описание</label>
+                <input type="text" class="form-input" id="group-desc" placeholder="Краткое описание содержимого">
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="saveGroup()">Создать</button>
+            </div>
+        </div>
+
+        <div class="modal" id="word-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">Добавить слово</div>
+            <div class="form-group">
+                <label class="form-label">Иероглиф(ы)</label>
+                <input type="text" class="form-input" id="word-hanzi-input" placeholder="例如">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Пиньинь</label>
+                    <input type="text" class="form-input" id="word-pinyin-input" placeholder="lìrú">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Перевод</label>
+                    <input type="text" class="form-input" id="word-meaning-input" placeholder="например">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Группа</label>
+                <select class="form-select" id="word-group-select"></select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Пример (иероглифы)</label>
+                <input type="text" class="form-input" id="word-example-hanzi" placeholder="例如我是一个学生">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Пиньинь примера</label>
+                    <input type="text" class="form-input" id="word-example-pinyin" placeholder="Lìrú wǒ shì yí gè xuésheng">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Перевод примера</label>
+                    <input type="text" class="form-input" id="word-example-trans" placeholder="Например, я студент">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="saveWord()">Добавить</button>
+            </div>
+        </div>
+
+        <div class="modal" id="edit-word-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">Редактировать слово</div>
+            <input type="hidden" id="edit-word-id">
+            <div class="form-group">
+                <label class="form-label">Иероглиф(ы)</label>
+                <input type="text" class="form-input" id="edit-word-hanzi">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Пиньинь</label>
+                    <input type="text" class="form-input" id="edit-word-pinyin">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Перевод</label>
+                    <input type="text" class="form-input" id="edit-word-meaning">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Группа</label>
+                <select class="form-select" id="edit-word-group"></select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Пример (иероглифы)</label>
+                <input type="text" class="form-input" id="edit-example-hanzi">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Пиньинь примера</label>
+                    <input type="text" class="form-input" id="edit-example-pinyin">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Перевод примера</label>
+                    <input type="text" class="form-input" id="edit-example-trans">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn danger" onclick="deleteCurrentWord()">Удалить</button>
+                <button class="btn" onclick="closeModal()">Отмена</button>
+                <button class="btn btn-primary" onclick="updateWord()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DATA ====================
+        const defaultGroups = [
+            { id: 'g1', name: 'HSK 1', desc: 'Базовый уровень, 150 слов', color: 'amber' },
+            { id: 'g2', name: 'HSK 2', desc: 'Элементарный уровень', color: 'sage' },
+            { id: 'g3', name: 'Числа', desc: 'Количественные значения', color: 'terracotta' },
+            { id: 'g4', name: 'Время', desc: 'Дни, месяцы, времена года', color: 'amber' }
+        ];
+        const defaultWords = [
+            { id: 'w1', hanzi: '我', pinyin: 'wǒ', meaning: 'я', groupId: 'g1', example: { hanzi: '我是学生', pinyin: 'Wǒ shì xuésheng', trans: 'Я студент' }},
+            { id: 'w2', hanzi: '你', pinyin: 'nǐ', meaning: 'ты', groupId: 'g1', example: { hanzi: '你好吗？', pinyin: 'Nǐ hǎo ma?', trans: 'Как дела?' }},
+            { id: 'w3', hanzi: '好', pinyin: 'hǎo', meaning: 'хороший', groupId: 'g1', example: { hanzi: '很好', pinyin: 'Hěn hǎo', trans: 'Очень хорошо' }},
+            { id: 'w4', hanzi: '是', pinyin: 'shì', meaning: 'есть, являться', groupId: 'g1', example: { hanzi: '我是中国人', pinyin: 'Wǒ shì Zhōngguó rén', trans: 'Я китаец' }},
+            { id: 'w5', hanzi: '人', pinyin: 'rén', meaning: 'человек', groupId: 'g1', example: { hanzi: '中国人', pinyin: 'Zhōngguó rén', trans: 'китаец' }},
+            { id: 'w6', hanzi: '中国', pinyin: 'Zhōngguó', meaning: 'Китай', groupId: 'g1', example: { hanzi: '我爱中国', pinyin: 'Wǒ ài Zhōngguó', trans: 'Я люблю Китай' }},
+            { id: 'w7', hanzi: '爱', pinyin: 'ài', meaning: 'любить', groupId: 'g2', example: { hanzi: '我爱你', pinyin: 'Wǒ ài nǐ', trans: 'Я люблю тебя' }},
+            { id: 'w8', hanzi: '学习', pinyin: 'xuéxí', meaning: 'учиться', groupId: 'g2', example: { hanzi: '学习汉语', pinyin: 'Xuéxí Hànyǔ', trans: 'Учить китайский' }},
+            { id: 'w9', hanzi: '一', pinyin: 'yī', meaning: 'один', groupId: 'g3', example: { hanzi: '一个', pinyin: 'yí gè', trans: 'один (сч. слово)' }},
+            { id: 'w10', hanzi: '二', pinyin: 'èr', meaning: 'два', groupId: 'g3', example: { hanzi: '二月', pinyin: 'Èr yuè', trans: 'февраль' }},
+            { id: 'w11', hanzi: '三', pinyin: 'sān', meaning: 'три', groupId: 'g3', example: { hanzi: '三个人', pinyin: 'Sān gè rén', trans: 'три человека' }},
+            { id: 'w12', hanzi: '今天', pinyin: 'jīntiān', meaning: 'сегодня', groupId: 'g4', example: { hanzi: '今天很好', pinyin: 'Jīntiān hěn hǎo', trans: 'Сегодня очень хорошо' }},
+            { id: 'w13', hanzi: '明天', pinyin: 'míngtiān', meaning: 'завтра', groupId: 'g4', example: { hanzi: '明天见', pinyin: 'Míngtiān jiàn', trans: 'До завтра' }}
+        ];
+
+        let groups = JSON.parse(localStorage.getItem('zen_groups')) || [...defaultGroups];
+        let words = JSON.parse(localStorage.getItem('zen_words')) || [...defaultWords];
+        let selectedGroupIds = new Set();
+        let currentTrainingCards = [];
+        let currentCardIndex = 0;
+        let isFlipped = false;
+
+        // Game state
+        let currentGame = null;
+        let gameWords = [];
+        let quizState = { index: 0, score: 0, answered: false };
+        let memoryState = { cards: [], flipped: [], matched: 0, moves: 0, locked: false };
+        let sprintState = { score: 0, timeLeft: 60, timer: null, currentWord: null, isFake: false };
+
+        function saveData() {
+            localStorage.setItem('zen_groups', JSON.stringify(groups));
+            localStorage.setItem('zen_words', JSON.stringify(words));
+        }
+
+        function resetData() {
+            if (!confirm('Сбросить все данные к начальным? Это удалит ваши изменения.')) return;
+            localStorage.removeItem('zen_groups');
+            localStorage.removeItem('zen_words');
+            groups = [...defaultGroups];
+            words = [...defaultWords];
+            selectedGroupIds.clear();
+            saveData();
+            renderAll();
+        }
+
+        // ==================== NAVIGATION ====================
+        function showView(viewName) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(viewName + '-view').classList.add('active');
+            event.target.classList.add('active');
+            if (viewName === 'library') renderGroups();
+            if (viewName === 'training') initTraining();
+            if (viewName === 'games') initGamesMenu();
+            if (viewName === 'editor') renderWordList();
+        }
+
+        // ==================== LIBRARY ====================
+        function renderGroups() {
+            const grid = document.getElementById('groups-grid');
+            document.getElementById('total-groups').textContent = groups.length;
+            document.getElementById('total-words').textContent = words.length;
+            document.getElementById('selected-count').textContent = selectedGroupIds.size;
+            document.getElementById('select-all-btn').style.display = selectedGroupIds.size === groups.length ? 'none' : 'inline-flex';
+            document.getElementById('clear-btn').style.display = selectedGroupIds.size > 0 ? 'inline-flex' : 'none';
+
+            if (groups.length === 0) {
+                grid.innerHTML = `<div class="empty-state glass" style="grid-column:1/-1;"><div class="empty-state-icon">📭</div><h3>Групп пока нет</h3><p>Создайте первую группу, чтобы начать изучение</p></div>`;
+                return;
+            }
+            grid.innerHTML = groups.map(g => {
+                const groupWords = words.filter(w => w.groupId === g.id);
+                const isSelected = selectedGroupIds.has(g.id);
+                const preview = groupWords.slice(0, 5);
+                return `
+                    <div class="group-card glass ${isSelected ? 'selected' : ''}" onclick="toggleGroup('${g.id}')">
+                        <div class="group-header">
+                            <div class="group-title">${escapeHtml(g.name)}</div>
+                            <div class="group-count">${groupWords.length}</div>
+                        </div>
+                        <div class="group-desc">${escapeHtml(g.desc || '')}</div>
+                        <div class="group-preview">
+                            ${preview.map(w => `<div class="preview-char">${escapeHtml(w.hanzi)}</div>`).join('')}
+                            ${groupWords.length > 5 ? `<div class="preview-char" style="font-size:12px;">+${groupWords.length - 5}</div>` : ''}
+                            ${groupWords.length === 0 ? '<span style="color:var(--text-muted);font-size:12px;">Пусто</span>' : ''}
+                        </div>
+                        <div class="group-actions" onclick="event.stopPropagation()">
+                            <button class="icon-btn" onclick="editGroup('${g.id}')" title="Редактировать">✏️</button>
+                            <button class="icon-btn danger" onclick="deleteGroup('${g.id}')" title="Удалить">🗑️</button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function toggleGroup(id) {
+            if (selectedGroupIds.has(id)) selectedGroupIds.delete(id);
+            else selectedGroupIds.add(id);
+            renderGroups();
+        }
+        function selectAllGroups() { groups.forEach(g => selectedGroupIds.add(g.id)); renderGroups(); }
+        function clearSelection() { selectedGroupIds.clear(); renderGroups(); }
+        function deleteGroup(id) {
+            if (!confirm('Удалить группу? Слова из группы останутся без группы.')) return;
+            groups = groups.filter(g => g.id !== id);
+            selectedGroupIds.delete(id);
+            words.forEach(w => { if (w.groupId === id) w.groupId = null; });
+            saveData(); renderGroups();
+        }
+        function editGroup(id) {
+            const g = groups.find(x => x.id === id);
+            const newName = prompt('Название группы:', g.name);
+            if (newName === null) return;
+            const newDesc = prompt('Описание:', g.desc || '');
+            if (newDesc === null) return;
+            g.name = newName || g.name; g.desc = newDesc;
+            saveData(); renderGroups();
+        }
+
+        // ==================== MODALS ====================
+        function openModal(modalId) {
+            document.getElementById('modal-overlay').classList.add('active');
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            document.getElementById(modalId).style.display = 'block';
+            if (modalId === 'word-modal') populateGroupSelect('word-group-select');
+            if (modalId === 'edit-word-modal') populateGroupSelect('edit-word-group');
+        }
+        function closeModal(e) {
+            if (e && e.target !== document.getElementById('modal-overlay')) return;
+            document.getElementById('modal-overlay').classList.remove('active');
+            document.querySelectorAll('.modal').forEach(m => {
+                m.style.display = 'none';
+                m.querySelectorAll('input').forEach(inp => inp.value = '');
+            });
+        }
+        function populateGroupSelect(selectId) {
+            const sel = document.getElementById(selectId);
+            sel.innerHTML = groups.map(g => `<option value="${g.id}">${escapeHtml(g.name)}</option>`).join('');
+        }
+
+        // ==================== GROUP CRUD ====================
+        function saveGroup() {
+            const name = document.getElementById('group-name').value.trim();
+            const desc = document.getElementById('group-desc').value.trim();
+            if (!name) return alert('Введите название группы');
+            groups.push({ id: 'g' + Date.now(), name, desc, color: 'amber' });
+            saveData(); closeModal(); renderGroups();
+        }
+
+        // ==================== WORD CRUD ====================
+        function saveWord() {
+            const hanzi = document.getElementById('word-hanzi-input').value.trim();
+            const pinyin = document.getElementById('word-pinyin-input').value.trim();
+            const meaning = document.getElementById('word-meaning-input').value.trim();
+            const groupId = document.getElementById('word-group-select').value;
+            const exHanzi = document.getElementById('word-example-hanzi').value.trim();
+            const exPinyin = document.getElementById('word-example-pinyin').value.trim();
+            const exTrans = document.getElementById('word-example-trans').value.trim();
+            if (!hanzi || !meaning) return alert('Заполните обязательные поля');
+            words.push({
+                id: 'w' + Date.now(), hanzi, pinyin, meaning, groupId,
+                example: exHanzi ? { hanzi: exHanzi, pinyin: exPinyin, trans: exTrans } : null
+            });
+            saveData(); closeModal(); renderWordList(); renderGroups();
+        }
+        function renderWordList() {
+            const list = document.getElementById('word-list');
+            if (words.length === 0) {
+                list.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📝</div><h3>Слов пока нет</h3><p>Добавьте первое слово для изучения</p></div>`;
+                return;
+            }
+            list.innerHTML = words.map(w => {
+                const g = groups.find(x => x.id === w.groupId);
+                return `
+                    <div class="word-item">
+                        <div class="word-hanzi">${escapeHtml(w.hanzi)}</div>
+                        <div class="word-info">
+                            <div class="word-pinyin">${escapeHtml(w.pinyin || '')}</div>
+                            <div class="word-meaning">${escapeHtml(w.meaning)}</div>
+                        </div>
+                        ${g ? `<div class="word-group-tag">${escapeHtml(g.name)}</div>` : '<div class="word-group-tag" style="opacity:0.5;">Без группы</div>'}
+                        <div class="word-actions">
+                            <button class="icon-btn" onclick="openEditWord('${w.id}')" title="Редактировать">✏️</button>
+                            <button class="icon-btn danger" onclick="deleteWord('${w.id}')" title="Удалить">🗑️</button>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+        function openEditWord(id) {
+            const w = words.find(x => x.id === id);
+            if (!w) return;
+            document.getElementById('edit-word-id').value = w.id;
+            document.getElementById('edit-word-hanzi').value = w.hanzi;
+            document.getElementById('edit-word-pinyin').value = w.pinyin || '';
+            document.getElementById('edit-word-meaning').value = w.meaning;
+            populateGroupSelect('edit-word-group');
+            document.getElementById('edit-word-group').value = w.groupId || '';
+            document.getElementById('edit-example-hanzi').value = w.example?.hanzi || '';
+            document.getElementById('edit-example-pinyin').value = w.example?.pinyin || '';
+            document.getElementById('edit-example-trans').value = w.example?.trans || '';
+            openModal('edit-word-modal');
+        }
+        function updateWord() {
+            const id = document.getElementById('edit-word-id').value;
+            const w = words.find(x => x.id === id);
+            if (!w) return;
+            w.hanzi = document.getElementById('edit-word-hanzi').value.trim();
+            w.pinyin = document.getElementById('edit-word-pinyin').value.trim();
+            w.meaning = document.getElementById('edit-word-meaning').value.trim();
+            w.groupId = document.getElementById('edit-word-group').value || null;
+            const exHanzi = document.getElementById('edit-example-hanzi').value.trim();
+            w.example = exHanzi ? {
+                hanzi: exHanzi,
+                pinyin: document.getElementById('edit-example-pinyin').value.trim(),
+                trans: document.getElementById('edit-example-trans').value.trim()
+            } : null;
+            saveData(); closeModal(); renderWordList(); renderGroups();
+        }
+        function deleteCurrentWord() { deleteWord(document.getElementById('edit-word-id').value); closeModal(); }
+        function deleteWord(id) {
+            if (!confirm('Удалить это слово?')) return;
+            words = words.filter(w => w.id !== id);
+            saveData(); renderWordList(); renderGroups();
+        }
+
+        // ==================== IMPORT / EXPORT ====================
+        function exportJSON() {
+            const data = {
+                version: '1.0',
+                exportDate: new Date().toISOString(),
+                groups: groups,
+                words: words
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `zen-hanzi-library-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data.words || !Array.isArray(data.words)) {
+                        throw new Error('Неверный формат файла: отсутствует массив words');
+                    }
+
+                    // Import groups
+                    if (data.groups && Array.isArray(data.groups)) {
+                        data.groups.forEach(impG => {
+                            if (!groups.find(g => g.id === impG.id)) {
+                                groups.push(impG);
+                            }
+                        });
+                    }
+
+                    // Import words (skip duplicates by hanzi)
+                    let added = 0, skipped = 0;
+                    data.words.forEach(impW => {
+                        if (!words.find(w => w.hanzi === impW.hanzi)) {
+                            words.push({
+                                ...impW,
+                                id: 'w' + Date.now() + Math.random().toString(36).substr(2,5)
+                            });
+                            added++;
+                        } else {
+                            skipped++;
+                        }
+                    });
+
+                    saveData();
+                    renderAll();
+                    alert(`Импорт завершён! Добавлено: ${added}, пропущено дубликатов: ${skipped}`);
+                } catch (err) {
+                    alert('Ошибка импорта: ' + err.message);
+                }
+                input.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // ==================== TRAINING ====================
+        function initTraining() {
+            const selector = document.getElementById('training-group-selector');
+            const info = document.getElementById('training-info');
+            const wrapper = document.getElementById('flashcard-wrapper');
+            const controls = document.getElementById('training-controls');
+            const shuffleControls = document.getElementById('shuffle-controls');
+            const progress = document.getElementById('progress-container');
+
+            selector.innerHTML = groups.map(g => {
+                const count = words.filter(w => w.groupId === g.id).length;
+                const isActive = selectedGroupIds.has(g.id);
+                return `<div class="group-chip ${isActive ? 'active' : ''}" onclick="toggleTrainingGroup('${g.id}')">${escapeHtml(g.name)}<span class="chip-count">${count}</span></div>`;
+            }).join('');
+
+            const activeGroups = groups.filter(g => selectedGroupIds.has(g.id));
+            const availableWords = words.filter(w => selectedGroupIds.has(w.groupId));
+
+            if (activeGroups.length === 0) {
+                info.innerHTML = 'Выберите хотя бы одну группу для начала тренировки';
+                info.style.display = 'block'; wrapper.style.display = 'none'; controls.style.display = 'none';
+                shuffleControls.style.display = 'none'; progress.style.display = 'none'; return;
+            }
+            if (availableWords.length === 0) {
+                info.innerHTML = 'В выбранных группах нет слов. Добавьте слова или выберите другие группы.';
+                info.style.display = 'block'; wrapper.style.display = 'none'; controls.style.display = 'none';
+                shuffleControls.style.display = 'none'; progress.style.display = 'none'; return;
+            }
+
+            info.innerHTML = `Тренировка: <span class="selected-groups">${activeGroups.map(g => escapeHtml(g.name)).join(', ')}</span> — ${availableWords.length} слов`;
+            info.style.display = 'block'; wrapper.style.display = 'block'; controls.style.display = 'flex';
+            shuffleControls.style.display = 'flex'; progress.style.display = 'block';
+
+            if (currentTrainingCards.length === 0 || !currentTrainingCards.every(c => selectedGroupIds.has(c.groupId))) {
+                currentTrainingCards = shuffleArray([...availableWords]);
+                currentCardIndex = 0; isFlipped = false;
+            }
+            renderCard();
+        }
+        function toggleTrainingGroup(id) {
+            if (selectedGroupIds.has(id)) selectedGroupIds.delete(id);
+            else selectedGroupIds.add(id);
+            currentTrainingCards = []; currentCardIndex = 0; isFlipped = false;
+            initTraining(); renderGroups();
+        }
+        function renderCard() {
+            const card = document.getElementById('flashcard');
+            const word = currentTrainingCards[currentCardIndex];
+            if (!word) return;
+            isFlipped = false; card.classList.remove('flipped');
+            document.getElementById('card-hanzi').textContent = word.hanzi;
+            document.getElementById('card-pinyin').textContent = word.pinyin || '';
+            document.getElementById('card-meaning').textContent = word.meaning;
+            const ex = word.example, exBlock = document.getElementById('card-example');
+            if (ex && ex.hanzi) {
+                exBlock.style.display = 'block';
+                document.getElementById('example-hanzi').textContent = ex.hanzi;
+                document.getElementById('example-pinyin').textContent = ex.pinyin || '';
+                document.getElementById('example-trans').textContent = ex.trans || '';
+            } else exBlock.style.display = 'none';
+            const total = currentTrainingCards.length;
+            document.getElementById('progress-current').textContent = currentCardIndex + 1;
+            document.getElementById('progress-total').textContent = total;
+            document.getElementById('progress-fill').style.width = ((currentCardIndex + 1) / total * 100) + '%';
+        }
+        function flipCard() { isFlipped = !isFlipped; document.getElementById('flashcard').classList.toggle('flipped', isFlipped); }
+        function nextCard() { if (currentCardIndex < currentTrainingCards.length - 1) { currentCardIndex++; renderCard(); } else { currentCardIndex = 0; renderCard(); } }
+        function prevCard() { if (currentCardIndex > 0) { currentCardIndex--; renderCard(); } }
+        function shuffleCards() { currentTrainingCards = shuffleArray(currentTrainingCards); currentCardIndex = 0; isFlipped = false; renderCard(); }
+        function resetTraining() { const availableWords = words.filter(w => selectedGroupIds.has(w.groupId)); currentTrainingCards = shuffleArray([...availableWords]); currentCardIndex = 0; isFlipped = false; renderCard(); }
+
+        // ==================== GAMES ====================
+        function initGamesMenu() {
+            const selector = document.getElementById('games-group-selector');
+            selector.innerHTML = groups.map(g => {
+                const count = words.filter(w => w.groupId === g.id).length;
+                const isActive = selectedGroupIds.has(g.id);
+                return `<div class="group-chip ${isActive ? 'active' : ''}" onclick="toggleGameGroup('${g.id}')">${escapeHtml(g.name)}<span class="chip-count">${count}</span></div>`;
+            }).join('');
+        }
+        function toggleGameGroup(id) {
+            if (selectedGroupIds.has(id)) selectedGroupIds.delete(id);
+            else selectedGroupIds.add(id);
+            initGamesMenu(); renderGroups();
+        }
+
+        function getGameWords() {
+            return words.filter(w => selectedGroupIds.has(w.groupId));
+        }
+
+        function startGame(type) {
+            const available = getGameWords();
+            if (available.length < 4) {
+                alert('Для игры нужно минимум 4 слова в выбранных группах');
+                return;
+            }
+            currentGame = type;
+            gameWords = shuffleArray([...available]);
+            document.getElementById('games-menu').style.display = 'none';
+            document.getElementById('game-result').classList.remove('active');
+            document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+
+            if (type === 'quiz') initQuiz();
+            else if (type === 'memory') initMemoryGame();
+            else if (type === 'sprint') initSprintGame();
+        }
+
+        function exitGame() {
+            if (sprintState.timer) clearInterval(sprintState.timer);
+            document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('games-menu').style.display = 'block';
+            currentGame = null;
+        }
+
+        function restartCurrentGame() {
+            if (currentGame) startGame(currentGame);
+        }
+
+        function showGameResult(title, stat, desc) {
+            document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+            document.getElementById('game-result').classList.add('active');
+            document.getElementById('result-title').textContent = title;
+            document.getElementById('result-stat').textContent = stat;
+            document.getElementById('result-desc').textContent = desc;
+        }
+
+        // ---- QUIZ ----
+        function initQuiz() {
+            document.getElementById('quiz-game').classList.add('active');
+            quizState = { index: 0, score: 0, answered: false };
+            renderQuizQuestion();
+        }
+        function renderQuizQuestion() {
+            const pool = gameWords.slice(0, Math.min(gameWords.length, 20));
+            if (quizState.index >= pool.length) {
+                const pct = Math.round(quizState.score / pool.length * 100);
+                let title = 'Хороший результат!', desc = 'Продолжайте практиковаться';
+                if (pct >= 90) { title = 'Великолепно!'; desc = 'Вы отлично знаете эти иероглифы'; }
+                else if (pct >= 70) { title = 'Отлично!'; desc = 'Уверенное знание'; }
+                else if (pct >= 50) { title = 'Неплохо'; desc = 'Есть куда расти'; }
+                else { title = 'Продолжайте учить'; desc = 'Попробуйте повторить слова в тренировке'; }
+                showGameResult(title, `${quizState.score}/${pool.length}`, desc);
+                return;
+            }
+            const current = pool[quizState.index];
+            const wrongOptions = shuffleArray(pool.filter(w => w.id !== current.id)).slice(0, 3);
+            const options = shuffleArray([current, ...wrongOptions]);
+
+            document.getElementById('quiz-current').textContent = quizState.index + 1;
+            document.getElementById('quiz-total').textContent = pool.length;
+            document.getElementById('quiz-score').textContent = quizState.score;
+            document.getElementById('quiz-hanzi').textContent = current.hanzi;
+            document.getElementById('quiz-feedback').className = 'quiz-feedback';
+            document.getElementById('quiz-feedback').textContent = '';
+            document.getElementById('quiz-next-btn').style.display = 'none';
+
+            const optsDiv = document.getElementById('quiz-options');
+            // ИСПРАВЛЕНИЕ: Добавлен атрибут data-id для точной идентификации кнопки
+            optsDiv.innerHTML = options.map(opt => `
+                <button class="quiz-option" data-id="${opt.id}" onclick="answerQuiz('${opt.id}', '${current.id}')">${escapeHtml(opt.meaning)}</button>
+            `).join('');
+            quizState.answered = false;
+        }
+
+        function answerQuiz(selectedId, correctId) {
+            if (quizState.answered) return;
+            quizState.answered = true;
+            const isCorrect = selectedId === correctId;
+            if (isCorrect) quizState.score++;
+
+            const opts = document.querySelectorAll('.quiz-option');
+            opts.forEach(btn => {
+                btn.classList.add('disabled');
+                // ИСПРАВЛЕНИЕ: Проверяем точный data-id вместо содержимого onclick
+                const btnId = btn.getAttribute('data-id');
+                if (btnId === correctId) {
+                    btn.classList.add('correct'); // Правильный вариант загорается зеленым
+                } else if (btnId === selectedId && !isCorrect) {
+                    btn.classList.add('wrong'); // Неправильный выбранный вариант загорается красным
+                }
+            });
+
+            // ИСПРАВЛЕНИЕ: Находим текущее слово для вывода пиньиня и перевода
+            const currentWord = gameWords.find(w => w.id === correctId);
+            const pinyinText = currentWord.pinyin ? `[${currentWord.pinyin}] ` : '';
+            
+            const fb = document.getElementById('quiz-feedback');
+            fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'wrong');
+            
+            // Выводим результат и добавляем информацию о слове
+            if (isCorrect) {
+                fb.innerHTML = `✓ Правильно!<br><span style="font-size: 14px; opacity: 0.9; margin-top: 4px; display: inline-block;">${pinyinText}— ${currentWord.meaning}</span>`;
+            } else {
+                fb.innerHTML = `✗ Неверно.<br><span style="font-size: 14px; opacity: 0.9; margin-top: 4px; display: inline-block;">Правильный ответ: <b>${pinyinText}— ${currentWord.meaning}</b></span>`;
+            }
+
+            document.getElementById('quiz-score').textContent = quizState.score;
+            document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        }
+        function nextQuizQuestion() { quizState.index++; renderQuizQuestion(); }
+
+        // ---- MEMORY ----
+        function initMemoryGame() {
+            document.getElementById('memory-game').classList.add('active');
+            const pool = gameWords.slice(0, Math.min(gameWords.length, 8));
+            const pairs = [];
+            pool.forEach(w => {
+                pairs.push({ id: w.id + '_h', type: 'hanzi', content: w.hanzi, pairId: w.id });
+                pairs.push({ id: w.id + '_m', type: 'meaning', content: w.meaning, pairId: w.id });
+            });
+            memoryState = {
+                cards: shuffleArray(pairs),
+                flipped: [],
+                matched: 0,
+                moves: 0,
+                locked: false
+            };
+            document.getElementById('memory-moves').textContent = '0';
+            document.getElementById('memory-matches').textContent = '0';
+            document.getElementById('memory-pairs').textContent = pool.length;
+            renderMemoryGrid();
+        }
+        function renderMemoryGrid() {
+            const grid = document.getElementById('memory-grid');
+            grid.innerHTML = memoryState.cards.map((card, idx) => {
+                const isFlipped = memoryState.flipped.includes(idx) || card.matched;
+                const isMatched = card.matched;
+                return `
+                    <div class="memory-card ${isFlipped ? 'flipped' : ''} ${isMatched ? 'matched' : ''} ${card.type === 'meaning' ? 'small-text' : ''}" 
+                         onclick="flipMemoryCard(${idx})" data-idx="${idx}">
+                        <div class="memory-card-content">${escapeHtml(card.content)}</div>
+                        ${!isFlipped ? '<div class="memory-overlay">?</div>' : ''}
+                    </div>`;
+            }).join('');
+        }
+        function flipMemoryCard(idx) {
+            if (memoryState.locked) return;
+            const card = memoryState.cards[idx];
+            if (card.matched || memoryState.flipped.includes(idx)) return;
+
+            memoryState.flipped.push(idx);
+            renderMemoryGrid();
+
+            if (memoryState.flipped.length === 2) {
+                memoryState.moves++;
+                document.getElementById('memory-moves').textContent = memoryState.moves;
+                const [i1, i2] = memoryState.flipped;
+                const c1 = memoryState.cards[i1], c2 = memoryState.cards[i2];
+
+                if (c1.pairId === c2.pairId) {
+                    c1.matched = true; c2.matched = true;
+                    memoryState.matched++;
+                    document.getElementById('memory-matches').textContent = memoryState.matched;
+                    memoryState.flipped = [];
+                    renderMemoryGrid();
+
+                    if (memoryState.matched === memoryState.cards.length / 2) {
+                        setTimeout(() => {
+                            showGameResult(
+                                'Победа!',
+                                `${memoryState.moves} ходов`,
+                                `Вы нашли все пары из ${memoryState.cards.length / 2} слов`
+                            );
+                        }, 600);
+                    }
+                } else {
+                    memoryState.locked = true;
+                    setTimeout(() => {
+                        memoryState.flipped = [];
+                        memoryState.locked = false;
+                        renderMemoryGrid();
+                    }, 1000);
+                }
+            }
+        }
+
+        // ---- SPRINT ----
+        function initSprintGame() {
+            document.getElementById('sprint-game').classList.add('active');
+            sprintState = { score: 0, timeLeft: 60, timer: null, currentWord: null, isFake: false };
+            document.getElementById('sprint-score').textContent = '0';
+            document.getElementById('sprint-timer').textContent = '60';
+            document.getElementById('sprint-timer').style.color = 'var(--amber)';
+            nextSprintRound();
+            sprintState.timer = setInterval(() => {
+                sprintState.timeLeft--;
+                document.getElementById('sprint-timer').textContent = sprintState.timeLeft;
+                if (sprintState.timeLeft <= 10) document.getElementById('sprint-timer').style.color = 'var(--terracotta)';
+                if (sprintState.timeLeft <= 0) endSprintGame();
+            }, 1000);
+        }
+        function nextSprintRound() {
+            const pool = gameWords;
+            const word = pool[Math.floor(Math.random() * pool.length)];
+            sprintState.currentWord = word;
+            // 50% chance of fake translation
+            sprintState.isFake = Math.random() < 0.5;
+            let displayMeaning = word.meaning;
+            if (sprintState.isFake) {
+                const wrong = pool.filter(w => w.id !== word.id);
+                if (wrong.length > 0) displayMeaning = wrong[Math.floor(Math.random() * wrong.length)].meaning;
+            }
+            document.getElementById('sprint-hanzi').textContent = word.hanzi;
+            document.getElementById('sprint-translation').textContent = displayMeaning;
+        }
+        function answerSprint(userSaysCorrect) {
+            const actuallyCorrect = !sprintState.isFake;
+            if (userSaysCorrect === actuallyCorrect) {
+                sprintState.score++;
+                document.getElementById('sprint-score').textContent = sprintState.score;
+            }
+            nextSprintRound();
+        }
+        function endSprintGame() {
+            clearInterval(sprintState.timer);
+            let title, desc;
+            if (sprintState.score >= 25) { title = 'Молниеносно!'; desc = 'Невероятная скорость распознавания'; }
+            else if (sprintState.score >= 15) { title = 'Отличный результат!'; desc = 'Вы уверенно распознаёте иероглифы'; }
+            else if (sprintState.score >= 8) { title = 'Хорошо!'; desc = 'Хороший темп, но можно быстрее'; }
+            else { title = 'Попробуйте ещё'; desc = 'Практика делает мастера'; }
+            showGameResult(title, `${sprintState.score} очков`, desc);
+        }
+
+        // ==================== UTILS ====================
+        function shuffleArray(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        function renderAll() { renderGroups(); renderWordList(); }
+
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('training-view').classList.contains('active')) {
+                if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+                else if (e.code === 'ArrowRight') nextCard();
+                else if (e.code === 'ArrowLeft') prevCard();
+            }
+        });
+
+        renderAll();
+    </script>
+</body>
+</html>

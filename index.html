@@ -1035,10 +1035,10 @@
         </header>
 
         <nav class="nav-tabs">
-            <button class="nav-tab active" onclick="showView('library')">📚 Библиотека</button>
-            <button class="nav-tab" onclick="showView('training')">🎯 Тренировка</button>
-            <button class="nav-tab" onclick="showView('games')">🎮 Игры</button>
-            <button class="nav-tab" onclick="showView('editor')">✏️ Редактор</button>
+            <button class="nav-tab active" onclick="showView('library')">Библиотека</button>
+            <button class="nav-tab" onclick="showView('training')">Тренировка</button>
+            <button class="nav-tab" onclick="showView('games')">Игры</button>
+            <button class="nav-tab" onclick="showView('editor')">Редактор</button>
         </nav>
 
         <!-- LIBRARY VIEW -->
@@ -1088,7 +1088,7 @@
                     <button class="control-btn" onclick="nextCard()">→</button>
                 </div>
                 <div class="controls" style="margin-top:16px; display:none;" id="shuffle-controls">
-                    <button class="btn btn-sm" onclick="shuffleCards()">🔀 Перемешать</button>
+                    <button class="btn btn-sm" onclick="shuffleCards()"> Перемешать</button>
                     <button class="btn btn-sm" onclick="resetTraining()">↺ Начать сначала</button>
                 </div>
             </div>
@@ -1100,17 +1100,17 @@
                 <div class="group-selector" id="games-group-selector"></div>
                 <div class="games-menu">
                     <div class="game-card glass" onclick="startGame('quiz')">
-                        <div class="game-icon">🧩</div>
+                        <div class="game-icon">测验</div>
                         <div class="game-title">Викторина</div>
                         <div class="game-desc">Угадай перевод иероглифа из 4 вариантов. Идеально для начального запоминания значений.</div>
                     </div>
                     <div class="game-card glass" onclick="startGame('memory')">
-                        <div class="game-icon">🧠</div>
+                        <div class="game-icon">记忆</div>
                         <div class="game-title">Память</div>
                         <div class="game-desc">Найди пары «иероглиф — перевод». Тренирует визуальную ассоциацию и концентрацию.</div>
                     </div>
                     <div class="game-card glass" onclick="startGame('sprint')">
-                        <div class="game-icon">⚡</div>
+                        <div class="game-icon">短跑</div>
                         <div class="game-title">Спринт</div>
                         <div class="game-desc">60 секунд на максимум правильных ответов. Проверь скорость распознавания на лету.</div>
                     </div>
@@ -1192,10 +1192,10 @@
             <div class="editor-section">
                 <div class="section-title">Импорт и экспорт</div>
                 <div class="action-bar glass" style="justify-content:flex-start;">
-                    <button class="btn btn-success" onclick="exportJSON()">📤 Экспорт JSON</button>
-                    <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">📥 Импорт JSON</button>
+                    <button class="btn btn-success" onclick="exportJSON()">Экспорт JSON</button>
+                    <button class="btn btn-primary" onclick="document.getElementById('import-file').click()">Импорт JSON</button>
                     <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importJSON(this)">
-                    <button class="btn btn-danger btn-sm" onclick="resetData()">♻️ Сбросить всё</button>
+                    <button class="btn btn-danger btn-sm" onclick="resetData()">Сбросить всё</button>
                 </div>
                 <p style="font-size:13px; color:var(--text-muted); margin-bottom:24px; padding:0 8px;">
                     Экспортируйте свою коллекцию в JSON-файл для резервного копирования или переноса на другое устройство. 
